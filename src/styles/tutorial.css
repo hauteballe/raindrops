@@ -1,0 +1,23 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  width: 100vw;
+  height: 100vh;
+  font-size: 10px;
+  font-family: "Heebo", sans-serif;
+  background: radial-gradient(#f3f1ff, #84beb5);
+}
+
+.title {
+  position: relative;
+  top: 4%;
+  left: 5%;
+  width: 500px;
+  font-size: 3rem;
+  font-family: "Heebo", sans-serif;
+  user-select: none;
+}
