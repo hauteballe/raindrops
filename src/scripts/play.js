@@ -12,8 +12,72 @@ const randomChoice = (array) => {
 
 const Game = () => {
   const gameScreen = document.querySelector(".game-screen");
+  const display = document.querySelector(".display-input");
+  const keyboard = document.querySelector(".keyboard");
+  // let enteredAnswer;
+  let correctAnswer;
+
+  const changeDisplay = (number) => {
+    if (display.value.length < 3) {
+      if (display.value == 0) {
+        display.value = number;
+      } else {
+        display.value += number;
+      }
+    }
+  };
+
+  const clearDisplay = (operation) => {
+    if (display.value !== 0) {
+      display.value = "";
+    }
+  };
+
+  const deleteLastNumber = () => {
+    if (display.value !== "") {
+      display.value = display.value.slice(0, display.value.length - 1);
+    }
+  };
+
+  function enterAnswer() {
+    if (display.value !== "") {
+      let enteredAnswer = display.value;
+      clearDisplay();
+      checkAnswer(enteredAnswer);
+    }
+  }
+
+  const getInputValue = () => {
+    keyboard.onclick = function (event) {
+      let number = event.target.getAttribute("data-number");
+      let operation = event.target.getAttribute("data-operation");
+
+      if (number) {
+        changeDisplay(number);
+      } else if (operation == "clear") {
+        clearDisplay(operation);
+      } else if (operation == "delete") {
+        deleteLastNumber(operation);
+      } else if (operation == "enter") {
+        enterAnswer(operation);
+      }
+    };
+  };
+
+  getInputValue();
+
+  const checkAnswer = (enteredAnswer) => {
+    const drops = gameScreen.querySelectorAll(".drop");
+    for (let drop of drops) {
+      if (drop.dataset.result === enteredAnswer) {
+        drop.remove();
+        return;
+      }
+    }
+  };
+
   const state = {
-    createDropInterval: 2000,
+    createDropInterval: 5000,
     isRunning: false,
   };
 
@@ -23,14 +87,44 @@ const Game = () => {
     checkCollision();
   };
 
+  const getOperators = (operation) => {
+    const numbers = getRange(1, 10);
+    let num1 = randomChoice(numbers);
+    let num2 = randomChoice(numbers);
+    if (operation === "-" && num1 < num2) {
+      const buffer = num1;
+      num1 = num2;
+      num2 = buffer;
+    }
+    return { num1, num2 };
+  };
+
   const createDrop = () => {
     const gameScreenWidth = gameScreen.offsetWidth;
     const dropLeftPositions = getRange(100, gameScreenWidth - 160, (step = 60));
     const drop = document.createElement("div");
+
+    const operation = document.createElement("div");
+    let oper = randomChoice(["+", "-", "*", "÷"]);
+    operation.innerText = oper;
+
+    let operators = getOperators(oper);
+    const operator1 = document.createElement("div");
+    operator1.innerText = operators.num1;
+    const operator2 = document.createElement("div");
+    operator2.innerText = operators.num2;
+
+    let result = getResult(operators.num1, operators.num2, oper);
+
     drop.classList.add("drop");
     drop.style.left = `${randomChoice(dropLeftPositions)}px`;
 
+    drop.dataset.result = result;
+
     gameScreen.appendChild(drop);
+    drop.appendChild(operator1);
+    drop.appendChild(operation);
+    drop.appendChild(operator2);
 
     setTimeout(() => {
       if (state.isRunning === false) {
@@ -38,6 +132,20 @@ const Game = () => {
       }
       createDrop();
     }, state.createDropInterval);
+  };
+
+  const getResult = (number1, number2, operation) => {
+    let operationResult;
+    if (operation == "+") {
+      operationResult = number1 + number2;
+    } else if (operation === "-") {
+      operationResult = number1 - number2;
+    } else if (operation === "*") {
+      operationResult = number1 * number2;
+    } else if (operation === "÷") {
+      operationResult = number1 / number2;
+    }
+    return operationResult;
   };
 
   const checkCollision = () => {
