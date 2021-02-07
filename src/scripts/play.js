@@ -14,6 +14,8 @@ const Game = () => {
   const gameScreen = document.querySelector(".game-screen");
   const display = document.querySelector(".display-input");
   const keyboard = document.querySelector(".keyboard");
+  let scoreOnDisplay = document.querySelector(".score-number");
+
   // let enteredAnswer;
   let correctAnswer;
 
@@ -71,14 +73,21 @@ const Game = () => {
     for (let drop of drops) {
       if (drop.dataset.result === enteredAnswer) {
         drop.remove();
+        changeScoreUp();
         return;
       }
     }
   };
 
+  const changeScoreUp = () => {
+    state.score++;
+    scoreOnDisplay.innerText = state.score;
+  };
+
   const state = {
     createDropInterval: 5000,
     isRunning: false,
+    score: 0,
   };
 
   const startGame = () => {
