@@ -11,15 +11,24 @@ const randomChoice = (array) => {
 };
 
 const Game = () => {
+  const backgroundSound = document.getElementById("background-sound");
+  const correctAnswerSound = document.getElementById("correct-answer");
+  const incorrectAnswerSound = document.getElementById("incorrect-answer");
+  const soundButton = document.getElementById("sound");
   const gameScreen = document.querySelector(".game-screen");
   const display = document.querySelector(".display-input");
   const keyboard = document.querySelector(".keyboard");
   let scoreOnDisplay = document.querySelector(".score-number");
 
-  // let enteredAnswer;
-  let correctAnswer;
+  soundButton.addEventListener("click", (event) => {
+    if (backgroundSound.paused) {
+      backgroundSound.play();
+    } else {
+      backgroundSound.pause();
+    }
+  });
 
-  const changeDisplay = (number) => {
+  function changeDisplay(number) {
     if (display.value.length < 3) {
       if (display.value == 0) {
         display.value = number;
@@ -27,7 +36,7 @@ const Game = () => {
         display.value += number;
       }
     }
-  };
+  }
 
   const clearDisplay = (operation) => {
     if (display.value !== 0) {
@@ -72,16 +81,32 @@ const Game = () => {
     const drops = gameScreen.querySelectorAll(".drop");
     for (let drop of drops) {
       if (drop.dataset.result === enteredAnswer) {
-        drop.remove();
+        playSplashAnimation(drop);
         changeScoreUp();
+        correctAnswerSound.play();
         return;
       }
     }
+    changeScoreDown();
+    incorrectAnswerSound.play();
   };
 
   const changeScoreUp = () => {
     state.score++;
     scoreOnDisplay.innerText = state.score;
+  };
+
+  const changeScoreDown = () => {
+    state.score--;
+    scoreOnDisplay.innerText = state.score;
+  };
+
+  const playSplashAnimation = (drop) => {
+    drop.classList.add("splash");
+    drop.innerHTML = '<img src="./assets/img/splash.png"/>';
+    setTimeout(() => {
+      drop.remove();
+    }, 300);
   };
 
   const state = {
@@ -127,7 +152,6 @@ const Game = () => {
 
     drop.classList.add("drop");
     drop.style.left = `${randomChoice(dropLeftPositions)}px`;
-
     drop.dataset.result = result;
 
     gameScreen.appendChild(drop);
@@ -165,6 +189,7 @@ const Game = () => {
       const dropPosition = drop.offsetTop + drop.offsetHeight;
       if (dropPosition >= gameScreenHeight) {
         drop.remove();
+        changeScoreDown();
       }
     }
 
