@@ -77,6 +77,16 @@ const Game = () => {
 
   getInputValue();
 
+  const addKeyboardControl = (event) => {
+    if (event.key === "Enter") {
+      enterAnswer();
+    } else {
+      changeDisplay(event.key);
+    }
+  };
+
+  window.addEventListener("keyup", addKeyboardControl);
+
   const checkAnswer = (enteredAnswer) => {
     const drops = gameScreen.querySelectorAll(".drop");
     for (let drop of drops) {
@@ -129,6 +139,15 @@ const Game = () => {
       const buffer = num1;
       num1 = num2;
       num2 = buffer;
+    } else if (operation === "÷") {
+      if (num1 < num2) {
+        const buffer = num1;
+        num1 = num2;
+        num2 = buffer;
+      }
+      if (num1 % num2 != 0) {
+        num1 -= num1 % num2;
+      }
     }
     return { num1, num2 };
   };
