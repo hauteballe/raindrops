@@ -6,5 +6,5 @@ play.addEventListener("click", () => {
 });
 
 tutorial.addEventListener("click", () => {
-  document.location.href = "./src/tutorial.html";
+  document.location.href = "./src/play.html?tutorial";
 });

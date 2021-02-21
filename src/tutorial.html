@@ -3,17 +3,68 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link type="img" rel="icon" href="../assets/img/favicon.png" />
+    <link type="img" rel="icon" href="./../src/assets/img/favicon.png" />
     <title>Raindrops</title>
-    <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link
       href="https://fonts.googleapis.com/css2?family=Cagliostro&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./styles/tutorial.css" />
+    <link rel="stylesheet" href="./styles/play.css" />
   </head>
   <body>
-    <h1 class="title">How to play?</h1>
-    <div class="game-wrapper"></div>
+    <!-- <h1 class="title">How to play?</h1> -->
+    <div class="game-wrapper">
+      <div class="game-screen">
+        <div class="ocean">
+      </div>
+    </div>
+    <div class="game-board">
+      <div class="score">
+        <img src="./assets/img/score-star.png" alt="score-star" />
+        <p>Score: <span class="score-number">0</span></p>
+      </div>
+      <div class="display">
+        <input
+          disabled
+          type="text"
+          value=""
+          id="display"
+          class="display-input"
+          maxlength="3"
+        />
+        <div class="keyboard">
+          <button data-number="7" class="number btn">7</button>
+          <button data-number="8" class="number btn">8</button>
+          <button data-number="9" class="number btn">9</button>
+          <button data-operation="clear" class="operation btn btn-equal">
+            clear
+          </button>
+          <button data-number="4" class="number btn">4</button>
+          <button data-number="5" class="number btn">5</button>
+          <button data-number="6" class="number btn">6</button>
+          <button data-number="1" class="number btn">1</button>
+          <button data-number="2" class="number btn">2</button>
+          <button data-number="3" class="number btn">3</button>
+          <button data-operation="enter" class="operation btn btn-equal">
+            enter
+          </button>
+          <button data-number="0" class="number btn btn-long">0</button>
+          <button data-operation="delete" class="operation btn">delete</button>
+        </div>
+      </div>
+      <button id="sound" class="btn-control sound">♫</button>
+      <button id="fullscreen" class="btn-control fullscreen">⛶</button>
+    </div>
+    <audio
+      src="./assets/sounds/background-sound.mp3"
+      id="background-sound"
+      loop
+    ></audio>
+    <audio src="./assets/sounds/correct-answer.mp3" id="correct-answer"></audio>
+    <audio
+      src="./assets/sounds/incorrect-answer.mp3"
+      id="incorrect-answer"
+    ></audio>
+    <script src="./scripts/play.js"></script>
   </body>
 </html>

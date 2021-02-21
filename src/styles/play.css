@@ -45,8 +45,6 @@ body {
   width: 70px;
   position: absolute;
   top: 80px;
-
-  animation: move 10s linear alternate;
 }
 
 .splash {
@@ -65,15 +63,6 @@ body {
   }
   100% {
     height: 60px;
-  }
-}
-
-@keyframes move {
-  0% {
-    top: 80px;
-  }
-  100% {
-    top: 100vh;
   }
 }
 
@@ -118,7 +107,7 @@ body {
   font-size: 1.5rem;
   font-weight: 600;
   font-family: "Cagliostro", sans-serif;
-  background: #ffffffaf;
+  background: lightblue;
   border-bottom-right-radius: 2rem;
   border-bottom-left-radius: 2rem;
 }
@@ -239,46 +228,80 @@ body {
 }
 
 .ocean {
-  height: 1%;
   width: 100%;
   position: absolute;
   bottom: 0;
   left: 0;
-  background: #68bad1;
+  background: #4298af;
+}
+
+.deep-ocean {
+  height: 30px;
+  width: 100%;
+  transition: height 0.4s ease-out;
+  /* background-color: red; */
 }
 
 .wave {
-  background: url(../assets/img/wave.svg) repeat-x;
-  position: absolute;
-  top: -118px;
-  width: 6400px;
-  height: 198px;
-  animation: wave 7s cubic-bezier(0.36, 0.45, 0.63, 0.53) infinite;
-  transform: translate3d(0, 0, 0);
+  height: 10px;
+  width: 100%;
+  animation: 3s linear 1s infinite alternate waveAnimation;
 }
 
-.wave:nth-of-type(2) {
-  top: -95px;
-  animation: wave 7s cubic-bezier(0.36, 0.45, 0.63, 0.53) -0.125s infinite,
-    swell 7s ease -1.25s infinite;
-  opacity: 1;
+.wave-shadow {
+  height: 10px;
+  width: 100%;
 }
 
-@keyframes wave {
+@keyframes waveAnimation {
   0% {
-    margin-left: 0;
+    height: 10px;
   }
   100% {
-    margin-left: -1600px;
+    height: 20px;
   }
 }
 
-@keyframes swell {
-  0%,
-  100% {
-    transform: translate3d(0, -25px, 0);
-  }
-  50% {
-    transform: translate3d(0, 5px, 0);
-  }
+.game-over-screen {
+  /* position: absolute; */
+  /* flex: 2.5; */
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  /* opacity: 0.5; */
+  background-color: rgba(0, 0, 0, 0.514);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  visibility: hidden;
+}
+
+.game-over {
+  /* position: absolute; */
+  border-radius: 10px;
+  width: 50%;
+  height: 50%;
+  /* z-index: 10; */
+  opacity: 1;
+  background-color: firebrick;
+  border: 1px solid black;
+}
+
+.game-over h1 {
+  text-align: center;
+  font-size: 50px;
+  font-weight: bold;
+}
+
+.game-over h2 {
+  text-align: center;
+  font-weight: bold;
+}
+
+.game-over-info {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
