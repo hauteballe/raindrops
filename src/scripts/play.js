@@ -1,26 +1,3 @@
-const MAX_WRONG_ANSWERS = 3;
-const DEFAULT_CREATE_DROP_TIMEOUT = 5000;
-const DROPS_WIDTH_INTERVAL = 60;
-const GAME_SCREEN_RIGHT_OFFSET = 160;
-const GAME_SCREEN_LEFT_OFFSET = 100;
-const CHECK_COLLISION_INTERVAL = 100;
-const OCEAN_INCREASE_OFFSET = 20;
-const KEYBOARD_ALLOWED_KEYS = [
-  "Enter",
-  "Delete",
-  "Backspace",
-  "0",
-  "1",
-  "2",
-  "3",
-  "4",
-  "5",
-  "6",
-  "7",
-  "8",
-  "9",
-];
-
 const getRange = (startNum, endNum, step = 1) => {
   let result = [];
   for (let i = startNum; i <= endNum; i += step) {
@@ -32,43 +9,6 @@ const getRange = (startNum, endNum, step = 1) => {
 const randomChoice = (array) => {
   return array[Math.floor(Math.random() * array.length)];
 };
-
-class TutorialMode {
-  constructor(game) {
-    this.game = game;
-  }
-
-  emulateEnterAnswer(answer) {
-    const inputDelayStep = 300;
-    let inputDelay = 300;
-    for (let c of answer.split("")) {
-      setTimeout(() => {
-        this.game.changeDisplay(c);
-      }, inputDelay);
-      inputDelay += inputDelayStep;
-    }
-    setTimeout(() => {
-      this.game.enterAnswer();
-    }, inputDelay);
-  }
-
-  solveEquation() {
-    const drops = this.game.gameScreen.querySelectorAll(".drop");
-    if (drops.length > 0) {
-      const drop = drops[0];
-      this.emulateEnterAnswer(drop.dataset.result);
-    }
-
-    setTimeout(() => {
-      if (!this.game.isRunning) return;
-      this.solveEquation();
-    }, 4000);
-  }
-
-  start = () => {
-    this.solveEquation();
-  };
-}
 
 class RaindropsGame {
   constructor() {
@@ -120,14 +60,19 @@ class RaindropsGame {
 
   getResult(number1, number2, operation) {
     let operationResult;
-    if (operation == "+") {
-      operationResult = number1 + number2;
-    } else if (operation === "-") {
-      operationResult = number1 - number2;
-    } else if (operation === "*") {
-      operationResult = number1 * number2;
-    } else if (operation === "÷") {
-      operationResult = number1 / number2;
+    switch (operation) {
+      case "+":
+        operationResult = number1 + number2;
+        break;
+      case "-":
+        operationResult = number1 - number2;
+        break;
+      case "*":
+        operationResult = number1 * number2;
+        break;
+      case "÷":
+        operationResult = number1 / number2;
+        break;
     }
     return operationResult;
   }
@@ -183,7 +128,7 @@ class RaindropsGame {
     this.gameScreen.appendChild(drop);
 
     setTimeout(() => {
-      if (this.isRunning === false) return;
+      if (!this.isRunning) return;
       this.createDrops();
     }, this.createDropTimeout);
   }
